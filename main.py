@@ -48,13 +48,30 @@ def execute_task(task: str):
     else:
         raise HTTPException(status_code=400, detail="Unknown task.")
 
+
 def task_b3():
-    response = requests.get("https://jsonplaceholder.typicode.com/todos/1")
-    if response.status_code == 200:
-        with open("/data/api-data.json", "w") as f:
-            json.dump(response.json(), f, indent=4)
-        return "Fetched data from API and saved."
-    return "Failed to fetch data."
+    try:
+        print("Fetching data from API...")  # Debugging line
+        response = requests.get("https://jsonplaceholder.typicode.com/todos/1")
+
+        if response.status_code == 200:
+            print("API request successful.")  # Debugging line
+            
+            # ✅ Create /data/ folder if it does not exist
+            os.makedirs("data", exist_ok=True)
+
+            # ✅ Write to data/api-data.json (without leading "/")
+            with open("data/api-data.json", "w") as f:
+                json.dump(response.json(), f, indent=4)
+            return "Fetched data from API and saved."
+
+        print(f"API request failed with status code: {response.status_code}")
+        return f"Failed to fetch data. Status code: {response.status_code}"
+
+    except Exception as e:
+        print(f"Error in task_b3: {e}")  # Print error to FastAPI logs
+        raise HTTPException(status_code=500, detail=str(e))  # Return error message
+
 
 def task_b4():
     repo_url = "https://github.com/example/repo.git"
