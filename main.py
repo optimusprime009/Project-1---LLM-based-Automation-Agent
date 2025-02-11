@@ -9,8 +9,12 @@ from collections import Counter
 from pathlib import Path
 import git
 from bs4 import BeautifulSoup
+from pydantic import BaseModel
 
 app = FastAPI()
+
+class TaskRequest(BaseModel):
+    task: str
 
 def execute_task(task: str):
     if "install uv and run datagen" in task.lower():
@@ -86,8 +90,8 @@ def task_b6():
     return "Failed to scrape website."
 
 @app.post("/run")
-def run_task(task: str):
-    result = execute_task(task)
+def run_task(request: TaskRequest):
+    result = execute_task(request.task)
     return {"message": result}
 
 def read_secure_file(path: str):
