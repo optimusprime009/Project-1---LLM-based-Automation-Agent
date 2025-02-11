@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy project files into the container
 COPY . /app
 
-# Install dependencies (added numpy)
-RUN pip install --no-cache-dir fastapi uvicorn requests gitpython beautifulsoup4 numpy
+# Install dependencies (added `openai`)
+RUN pip install --no-cache-dir fastapi uvicorn requests gitpython beautifulsoup4 numpy openai
 
 # Expose the FastAPI port
 EXPOSE 8000
