@@ -112,14 +112,19 @@ def run_task(request: TaskRequest):
     return {"message": result}
 
 def read_secure_file(path: str):
-    if not path.startswith("/data/"):
+    # ✅ Normalize path to ensure correct validation
+    path = os.path.normpath(path)
+
+    # ✅ Allow both "/data/" and "data/" for Windows compatibility
+    if not path.startswith("data" + os.sep):
         raise HTTPException(status_code=400, detail="Access to this path is restricted.")
-    
+
     try:
         with open(path, "r") as file:
             return file.read()
     except FileNotFoundError:
         raise HTTPException(status_code=404, detail="File not found.")
+
 
 @app.get("/read")
 def read_file(path: str):
