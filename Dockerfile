@@ -7,8 +7,8 @@ WORKDIR /app
 # Copy project files into the container
 COPY . /app
 
-# Install dependencies
-RUN pip install --no-cache-dir fastapi uvicorn requests gitpython beautifulsoup4 sqlite3
+# Install dependencies (without sqlite3)
+RUN pip install --no-cache-dir fastapi uvicorn requests gitpython beautifulsoup4
 
 # Expose the FastAPI port
 EXPOSE 8000
